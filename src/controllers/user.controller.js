@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import userModel from "../models/user.model.js"
 import cartModel from "../models/cart.model.js"
+import { hashPassword, comparePassword } from "../../encrypt.js"
 export const getUsers= async (req,res)=>{
     const users = await userModel.find().exec()
     res.json(users)
@@ -26,11 +27,13 @@ export const createUser= async (req,res) =>{
     try{
         const {name, surname, email, password} = req.body
 
+        const hashedPassword = await hashPassword(password)
+
         const newUser = new userModel({
             name,
             surname,
             email,
-            password
+            password: hashedPassword
         })
 
         const newCart = new cartModel()
@@ -44,5 +47,30 @@ export const createUser= async (req,res) =>{
     }catch(error){
         console.log(error);
         res.status(500).send(error)
+    }
+}
+
+export const isAuthenticated = async (req,res) =>{
+    try{
+        const {email, password} = req.body
+
+        const userByEmail = await userModel.findOne({email})
+
+        if(!userByEmail){
+            return res.status(404).send({message: 'user not found'})
+        } 
+
+        const isPasswordValid = await comparePassword(password, userByEmail.password)
+
+        if(isPasswordValid){
+            console.log('usuario autenticado');
+            return res.status(200).send({message: 'password valid' , user: userByEmail})
+        }
+        if(!isPasswordValid){
+            return res.status(404).send({message: 'password invalid'})
+        }
+    }catch(error){
+       
+        res.status(500).send({message: 'error al authenticar'})
     }
 }

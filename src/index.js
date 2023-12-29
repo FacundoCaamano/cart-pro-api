@@ -4,12 +4,15 @@ import mongoose from 'mongoose'
 import users from './routes/users.router.js'
 import products from './routes/product.router.js'
 import carts from './routes/cart.router.js'
+import cors from 'cors'
+
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT
 const MONGO_URI = process.env.MONGO_DB
 
+app.use(cors())
 app.use(express.json())
 app.use('/carrito-pro', users)
 app.use('/carrito-pro', products)

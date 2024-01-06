@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import users from './routes/users.router.js'
 import products from './routes/product.router.js'
 import carts from './routes/cart.router.js'
+import buys from './routes/buys.router.js'
 import cors from 'cors'
 
 dotenv.config()
@@ -24,6 +25,7 @@ app.use(express.json())
 app.use('/carrito-pro', users)
 app.use('/carrito-pro', products)
 app.use('/carrito-pro', carts)
+app.use('/carrito-pro', buys)
 mongoose.connect(MONGO_URI,{
     dbName: 'carrito-pro'
 })

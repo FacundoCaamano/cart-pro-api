@@ -12,7 +12,14 @@ const app = express()
 const PORT = process.env.PORT
 const MONGO_URI = process.env.MONGO_DB
 
-app.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:4200', // Reemplaza esto con la URL de tu aplicación Angular
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+  };
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use('/carrito-pro', users)
 app.use('/carrito-pro', products)

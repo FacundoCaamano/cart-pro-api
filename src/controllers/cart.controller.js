@@ -6,6 +6,12 @@ export const getCarts = async (req, res)=>{
     res.json(carts)
 }
 
+export const getCartById = async (req,res)=>{
+    const id = req.params.id
+    const cart = await cartModel.findById(id).populate('products').exec()
+    res.json(cart)
+}
+
 export const addProductToCart = async (req, res)=>{
     try{
         const cartId = req.params.cartId

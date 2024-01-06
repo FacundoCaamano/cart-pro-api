@@ -74,3 +74,16 @@ export const isAuthenticated = async (req,res) =>{
         res.status(500).send({message: 'error al authenticar'})
     }
 }
+
+export const editUser = async(req,res)=>{
+    const id = req.params.id
+    const {name, surname, email} = req.body
+  
+    const user = {
+        name,
+        surname,
+        email
+    }
+    await userModel.findByIdAndUpdate(id, user)
+    res.json({message: 'user updated'})
+}

@@ -25,7 +25,7 @@ export const getUserById = async (req,res)=>{
 
 export const createUser= async (req,res) =>{
     try{
-        const {name, surname, email, password} = req.body
+        const {name, surname, email,role, password} = req.body
 
         const hashedPassword = await hashPassword(password)
 
@@ -33,6 +33,7 @@ export const createUser= async (req,res) =>{
             name,
             surname,
             email,
+            role,
             password: hashedPassword
         })
 

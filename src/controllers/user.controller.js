@@ -42,9 +42,11 @@ export const createUser= async (req,res) =>{
 
         newUser.cart = newCart._id
 
+        const token = generateToken(newUser)
+
         await newUser.save()
         
-        res.status(200).send({user: newUser, cart: newCart , message: 'user created'})
+        res.status(200).send({user: newUser, cart: newCart, token: token , message: 'user created'})
     }catch(error){
         console.log(error);
         res.status(500).send(error)
@@ -64,8 +66,8 @@ export const isAuthenticated = async (req,res) =>{
         const isPasswordValid = await comparePassword(password, userByEmail.password)
 
         if(isPasswordValid){
-            console.log('usuario autenticado');
-            return res.status(200).send({message: 'password valid' , user: userByEmail})
+            const token = generateToken(userByEmail)
+            return res.status(200).send({message: 'password valid' , user: userByEmail, token: token})
         }
         if(!isPasswordValid){
             return res.status(404).send({message: 'password invalid'})

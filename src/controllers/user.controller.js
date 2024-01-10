@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import userModel from "../models/user.model.js"
 import cartModel from "../models/cart.model.js"
 import { hashPassword, comparePassword } from "../../encrypt.js"
+import {generateToken} from "../../utils.js"
 export const getUsers= async (req,res)=>{
     const users = await userModel.find().exec()
     res.json(users)
@@ -46,7 +47,7 @@ export const createUser= async (req,res) =>{
 
         await newUser.save()
         
-        res.status(200).send({user: newUser, cart: newCart, token: token , message: 'user created'})
+        res.status(200).send({ cart: newCart, token: token , message: 'user created'})
     }catch(error){
         console.log(error);
         res.status(500).send(error)
@@ -67,7 +68,7 @@ export const isAuthenticated = async (req,res) =>{
 
         if(isPasswordValid){
             const token = generateToken(userByEmail)
-            return res.status(200).send({message: 'password valid' , user: userByEmail, token: token})
+            return res.status(200).send({message: 'password valid' , token: token})
         }
         if(!isPasswordValid){
             return res.status(404).send({message: 'password invalid'})

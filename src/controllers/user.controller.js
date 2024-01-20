@@ -81,12 +81,13 @@ export const isAuthenticated = async (req,res) =>{
 
 export const editUser = async(req,res)=>{
     const id = req.params.id
-    const {name, surname, email} = req.body
+    const {name, surname, email,role} = req.body
   
     const user = {
         name,
         surname,
-        email
+        email,
+        role
     }
     await userModel.findByIdAndUpdate(id, user)
     res.json({message: 'user updated'})

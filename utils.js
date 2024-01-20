@@ -4,8 +4,10 @@ export function generateToken(usuario){
     const payload = {
         id: usuario.id,
         name: usuario.name,
+        surname: usuario.surname,
         email: usuario.email,
-        role: usuario.role
+        role: usuario.role,
+        cart: usuario.cart
     }
 
     const secretKey = process.env.SECRET_KEY

@@ -10,3 +10,9 @@ export const createProduct = async (req,res)=>{
     const product = await productModel.create(req.body)
     res.json(product)
 }
+export const getProductById = async(req,res)=>{
+    const id = req.params.id
+
+    const product = await productModel.findById(id)
+    res.json(product)
+}

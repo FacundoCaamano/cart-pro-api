@@ -18,7 +18,7 @@ export const addProductToCart = async (req, res)=>{
         const productId = req.params.productId
 
         const cart = await cartModel.findById(cartId)
-        console.log(cart);
+        
         if(!cart){
             return res.status(404).send({message: 'carrito no encontrado'})
         }
@@ -37,5 +37,31 @@ export const addProductToCart = async (req, res)=>{
     }catch(error){
         console.log(error);
         res.status(500).send({message: 'Error al agregar el producto'},error)
+    }
+}
+
+export const deleteProductToCart = async (req,res) =>{
+    try{
+        const cartId = req.params.cartId
+        const productId = req.params.productId
+
+        const cart = await cartModel.findById(cartId)
+        if(!cart){
+            return res.status(404).send({message: 'carrito no encontrado'})
+        }
+
+        const product = await productModel.findById(productId)
+        if(!product){
+            return res.status(404).send({message: 'producto no encontrado'})
+        }
+
+        cart.products.pull(product._id)
+
+        await cart.save()
+        await product.save()
+        res.json({ message: "Producto eliminado del carrito" })
+        
+    }catch{
+        res.status(500).send({message: 'Error al eliminar el producto'})
     }
 }

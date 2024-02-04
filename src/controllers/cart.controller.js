@@ -16,9 +16,9 @@ export const addProductToCart = async (req, res)=>{
     try{
         const cartId = req.params.cartId
         const productId = req.params.productId
+        const quantity = req.body.quantity || 1
 
         const cart = await cartModel.findById(cartId)
-        
         if(!cart){
             return res.status(404).send({message: 'carrito no encontrado'})
         }
@@ -28,9 +28,14 @@ export const addProductToCart = async (req, res)=>{
             return res.status(404).send({message: 'producto no encontrado'})
         }
         
-        
-         cart.products.push(product._id)
-        
+        const existingProduct = cart.products.find( p => p.product._id.equals(productId))
+
+        if(existingProduct){
+            existingProduct.quantity += quantity
+        }else{
+            cart.products.push({product: productId, quantity})
+        }
+
          await cart.save()
          await product.save()
          res.json({ message: "Producto agregado al carrito" })
@@ -55,7 +60,7 @@ export const deleteProductToCart = async (req,res) =>{
             return res.status(404).send({message: 'producto no encontrado'})
         }
 
-        cart.products.pull(product._id)
+        cart.products= cart.products.filter(p => !p.product._id.equals(productId))
 
         await cart.save()
         await product.save()

@@ -3,10 +3,10 @@ import compra from "../models/buys.js"
 
 export const createBuy = async (req,res)=>{
     try{
-        const {user, products, total} = req.body
+        const { products, total ,userId} = req.body
 
         const newBuy = new compra({
-            user,
+            userId,
             products,
             total,
             fecha: new Date()
@@ -23,7 +23,7 @@ export const getBuys= async (req,res)=>{
     try{
         const userId = req.params.userId
 
-        const buys = await compra.find({user: userId}).populate('products').exec()
+        const buys = await compra.find({userId: userId})
 
         res.status(200).json({buys})
     }catch{

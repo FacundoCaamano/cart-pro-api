@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
+import userModel from "./user.model.js";
 
 const productSchema = new mongoose.Schema({
+    sellerId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    },
     title: String,
     price: Number,
     thumbnail: [String],

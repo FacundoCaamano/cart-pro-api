@@ -70,3 +70,22 @@ export const deleteProductToCart = async (req,res) =>{
         res.status(500).send({message: 'Error al eliminar el producto'})
     }
 }
+
+export const clearCart = async (req, res)=>{
+    try{
+        const cartId = req.params.cartId
+
+        const cart = await cartModel.findById(cartId)
+        
+        if (!cart) {
+            return res.status(404).send({message: 'Carrito no encontrado'})
+        }
+
+        cart.products = []
+        await cart.save()
+
+        res.json({message: 'carrito vaciado'})
+    }catch{
+        res.status(500).send({message: 'Error al limpiar el carrito'}) 
+    }
+}

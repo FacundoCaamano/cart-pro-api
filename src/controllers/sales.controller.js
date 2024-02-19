@@ -1,9 +1,23 @@
 import mongoose from "mongoose"
 import sellerModel from "../models/sales.model.js"
 
-export const getSalesById =(req, res)=>{
+export const getSalesById = async(req, res)=>{
+    try{
+
+        const userId = req.params._id
+        const sales = await sellerModel.find({sellerId: userId})
+
+        
+       
+     return res.status(200).json(sales)
+        
+    }catch{
+        res.status(500).json({message: 'error al obtener ventas'})
+    }
+
+
+
     
-    res.json({message:'sales'})
 }
 
 export const createSales = async (req,res)=>{

@@ -7,6 +7,7 @@ export function generateToken(usuario){
         surname: usuario.surname,
         email: usuario.email,
         role: usuario.role,
+        addresses: usuario.addresses,
         cart: usuario.cart
     }
 

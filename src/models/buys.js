@@ -10,6 +10,13 @@ const buySchema = new mongoose.Schema({
         ref: 'products'
      }],
      total: Number,
+     address: {
+      street: String,
+      city: String,
+      num: String,
+      province: String,
+      postalCode: String
+      },
      fecha: Date
 })
 

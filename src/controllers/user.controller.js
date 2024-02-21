@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 import userModel from "../models/user.model.js"
 import cartModel from "../models/cart.model.js"
 import { hashPassword, comparePassword } from "../../encrypt.js"
-import {generateToken} from "../../utils.js"
+import {checkToken, generateToken} from "../../utils.js"
 export const getUsers= async (req,res)=>{
     const users = await userModel.find().exec()
     res.json(users)
@@ -89,6 +89,70 @@ export const editUser = async(req,res)=>{
         email,
         role
     }
-    await userModel.findByIdAndUpdate(id, user)
-    res.json({message: 'user updated'})
+    try{
+        await userModel.findByIdAndUpdate(id, user)
+        const updatedUser = await userModel.findById(id)
+
+        const newToken = generateToken(updatedUser)
+        res.json({message: 'user updated', token: newToken})
+    }catch{
+        console.error('Error al actualizar usuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
+
+
+
+export const addAddress = async (req, res) => {
+    const userId = req.params.userId;
+    const address = req.body.address;
+
+    try {
+        // Encuentra el usuario por su ID
+        const user = await userModel.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Agrega la nueva dirección al array de direcciones del usuario
+        user.addresses.push(address);
+
+        // Guarda los cambios en la base de datos
+        await user.save();
+
+        const token = generateToken(user)
+
+        // Responde con el usuario actualizado
+        res.json({ user , token });
+    } catch (error) {
+        // Manejo de errores
+        console.error('Error al agregar dirección:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
+export const deleteAddress=async (req,res)=>{
+    const userId = req.params.userid
+    const addressId = req.params.addressId
+
+    try{
+
+        const user = await userModel.findById(userId)
+
+        if(!user){
+            res.json({message:'usuario no encontrado'}) 
+        }
+        user.addresses.pull({_id: addressId})
+
+        await user.save()
+        const token = generateToken(user)
+        res.json({message:'Direccion eliminada', token})
+    }catch(e){
+        res.status(500).json({message:'error',e:e})
+    }
+
+}
+
+
+

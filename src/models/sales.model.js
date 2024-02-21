@@ -21,6 +21,14 @@ const sellerSchema = new mongoose.Schema({
             }
         ]
     },
+    address: {
+            street: String,
+            city: String,
+            num: String,
+            province: String,
+            postalCode: String
+        }
+    ,
     date: Date
 })
 

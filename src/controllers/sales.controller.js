@@ -23,12 +23,13 @@ export const getSalesById = async(req, res)=>{
 export const createSales = async (req,res)=>{
     try{
 
-        const {sellerId, buyerId, products} = req.body
+        const {sellerId, buyerId, products,address} = req.body
         
         const newSales = new sellerModel({
             sellerId,
             buyerId,
             products,
+            address,
             date: new Date()
         })
         

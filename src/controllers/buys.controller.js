@@ -3,12 +3,13 @@ import compra from "../models/buys.js"
 
 export const createBuy = async (req,res)=>{
     try{
-        const { products, total ,userId} = req.body
+        const { products, total ,userId, address} = req.body
 
         const newBuy = new compra({
             userId,
             products,
             total,
+            address,
             fecha: new Date()
         })
 
@@ -34,6 +35,7 @@ export const getBuys = async (req, res) => {
                 _id: buy._id,
                 total: buy.total,
                 fecha: buy.fecha,
+                address: buy.address,
                 products: buy.products // Si necesitas más información de los productos, podrías formatearlos aquí
             };
         });

@@ -7,7 +7,8 @@ const buySchema = new mongoose.Schema({
      },
      products: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'products'
+        ref: 'products',
+        quantity: Number
      }],
      total: Number,
      address: {

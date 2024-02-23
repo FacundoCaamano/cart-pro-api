@@ -1,9 +1,10 @@
 import compra from "../models/buys.js"
+import { stock } from "./product.controller.js"
 
 
 export const createBuy = async (req,res)=>{
     try{
-        const { products, total ,userId, address} = req.body
+        const { products,total ,userId, address} = req.body
 
         const newBuy = new compra({
             userId,
@@ -14,6 +15,12 @@ export const createBuy = async (req,res)=>{
         })
 
         await newBuy.save()
+        const compraPopulated = await compra.findById(newBuy._id).populate('products');
+        for (let index = 0; index < compraPopulated.products.length; index++) {
+            let product = compraPopulated.products[index]
+            let total =  compraPopulated.total
+            stock(product._id, total)
+        }
         res.status(200).json({mensaje: 'Compra realizada con éxito',newBuy})
     }catch{
         res.status(500).json({error: 'Error al realizar la compra'})

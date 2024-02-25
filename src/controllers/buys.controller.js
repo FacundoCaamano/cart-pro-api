@@ -9,7 +9,7 @@ export const createBuy = async (req,res)=>{
 
         const newBuy = new compra({
             userId,
-            products, // Agregar la información del producto aquí
+            products, 
             total,
             address,
             fecha: new Date()
@@ -18,7 +18,9 @@ export const createBuy = async (req,res)=>{
         await newBuy.save()
 
         
-        
+        for (let index = 0; index < products.length; index++) {
+            stock(products[index].productId, products[index].quantity)
+        }
       
         res.status(200).json({mensaje: 'Compra realizada con éxito',newBuy})
     }catch{

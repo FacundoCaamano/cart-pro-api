@@ -6,10 +6,12 @@ const buySchema = new mongoose.Schema({
         ref: 'users' 
      },
      products: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'products',
-        quantity: Number
-     }],
+      productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'products'
+      },
+      quantity: Number
+  }],
      total: Number,
      address: {
       street: String,
@@ -22,7 +24,7 @@ const buySchema = new mongoose.Schema({
 })
 
 buySchema.pre('find', function(){
-   this.populate('products')
+   this.populate('products.productId')
 })
 const compra = mongoose.model('buys', buySchema)
 

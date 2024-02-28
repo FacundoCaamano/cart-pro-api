@@ -6,29 +6,23 @@ export const getSalesById = async(req, res)=>{
 
         const userId = req.params._id
         const sales = await sellerModel.find({sellerId: userId})
-
-        
-       
-     return res.status(200).json(sales)
+        return res.status(200).json(sales)
         
     }catch{
         res.status(500).json({message: 'error al obtener ventas'})
-    }
-
-
-
-    
+    }    
 }
 
 export const createSales = async (req,res)=>{
     try{
 
-        const {sellerId, buyerId, products,address} = req.body
+        const {sellerId, buyerId, products,total,address} = req.body
         
         const newSales = new sellerModel({
             sellerId,
             buyerId,
             products,
+            total,
             address,
             date: new Date()
         })

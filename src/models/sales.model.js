@@ -10,17 +10,14 @@ const sellerSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
-    products: {
-        type:[
-            {
-                product:{
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'products'
-                },
-                quantity: Number
-            }
-        ]
-    },
+    products: [{
+        productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'products'
+        },
+        quantity: Number
+    }],
+    total: Number,
     address: {
             street: String,
             city: String,

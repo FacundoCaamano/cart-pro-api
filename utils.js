@@ -12,24 +12,23 @@ export function generateToken(usuario){
     }
 
     const secretKey = process.env.SECRET_KEY
-    const token = jwt.sign(payload, secretKey, {expiresIn: '1d'})
+    const token = jwt.sign(payload, secretKey, {expiresIn: '7d'})
 
     return token
 }
 
-export const checkToken=(req,res,next)=>{
-    console.log('pasa por el middleware');
-    if(!req.headers['authorization']){
-        return res.json(401).send({message: 'debes incluir la cabecera de autorización'})
+export const checkToken = (req, res, next) => {
+    if (!req.headers['authorization']) {
+        return res.status(401).json({ message: 'Debes incluir la cabecera de autorización' });
     }
-    const token = req.headers['authorization']
+    const token = req.headers['authorization'];
 
-    let payload
-    try{
-        payload = jwt.verify(token, process.env.SECRET_KEY)
-    }catch{
-        return res.json(401).send({message: 'token invalido'})
+    let payload;
+    try {
+        payload = jwt.verify(token, process.env.SECRET_KEY);
+    } catch {
+        return res.status(401).json({ message: 'Token inválido' });
     }
 
-    next()
+    next();
 }

@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+
 import sellerModel from "../models/sales.model.js"
 
 export const getSalesById = async(req, res)=>{

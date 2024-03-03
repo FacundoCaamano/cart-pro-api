@@ -2,11 +2,8 @@ import mongoose from "mongoose"
 import userModel from "../models/user.model.js"
 import cartModel from "../models/cart.model.js"
 import { hashPassword, comparePassword } from "../../encrypt.js"
-import {checkToken, generateToken} from "../../utils.js"
-export const getUsers= async (req,res)=>{
-    const users = await userModel.find().exec()
-    res.json(users)
-}
+import { generateToken} from "../../utils.js"
+
 
 export const getUserById = async (req,res)=>{
     const user = await userModel.findById(req.params.id).populate(

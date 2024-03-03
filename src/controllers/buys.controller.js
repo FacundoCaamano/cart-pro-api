@@ -52,7 +52,6 @@ export const getBuys = async (req, res) => {
 
         res.status(200).json({ buys: formattedBuys });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: 'Error al obtener las compras.' });
     }
 };

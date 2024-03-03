@@ -40,7 +40,7 @@ export const addProductToCart = async (req, res)=>{
          await product.save()
          res.json({ message: "Producto agregado al carrito" })
     }catch(error){
-        console.log(error);
+       
         res.status(500).send({message: 'Error al agregar el producto'},error)
     }
 }

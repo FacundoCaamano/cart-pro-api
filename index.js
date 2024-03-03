@@ -1,24 +1,27 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
-import users from './routes/users.router.js'
-import products from './routes/product.router.js'
-import carts from './routes/cart.router.js'
-import buys from './routes/buys.router.js'
+import users from './src/routes/users.router.js'
+import products from './src/routes/product.router.js'
+import carts from './src/routes/cart.router.js'
+import buys from './src/routes/buys.router.js'
 import cors from 'cors'
-import sales from './routes/sales.router.js'
+import sales from './src/routes/sales.router.js'
 
 
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT
+const PORT = 3000
 const MONGO_URI = process.env.MONGO_DB
 
 
 
 app.use(cors())
 app.use(express.json())
+app.get('/', (req,res)=>{
+    res.json({title:"Cart-pro-api"})
+})
 app.use('/carrito-pro', users)
 app.use('/carrito-pro', products)
 app.use('/carrito-pro', carts)

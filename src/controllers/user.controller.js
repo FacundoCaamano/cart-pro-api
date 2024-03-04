@@ -4,6 +4,10 @@ import cartModel from "../models/cart.model.js"
 import { hashPassword, comparePassword } from "../../encrypt.js"
 import { generateToken} from "../../utils.js"
 
+export const getUsers= async (req,res)=>{
+    const users = await userModel.find().exec()
+    res.json(users)
+}
 
 export const getUserById = async (req,res)=>{
     const user = await userModel.findById(req.params.id).populate(
